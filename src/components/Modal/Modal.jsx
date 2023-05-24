@@ -17,13 +17,14 @@ export function Modal ({ onToggle, description, largeImage }) {
     }
 
     useEffect(() => {
+        console.log('fsdfds')
         document.body.style.overflow = 'hidden'
         window.addEventListener('keydown', handlePressEscape)
         return () => {
             document.body.style.overflow = 'inherit'
             window.removeEventListener('keydown', handlePressEscape)
         }
-    }, [])
+    })
 
     return (
         <ModalOverlay onClick={ handlePressBackdrop }>
