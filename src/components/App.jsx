@@ -1,5 +1,5 @@
 import { Searchbar } from './Searchbar/Searchbar'
-import { useState, useEffect, useCallback } from 'react'
+import { useState, useEffect } from 'react'
 import { getImagesList } from './services/api'
 import { ImageGallery } from './ImageGallery/ImageGallery'
 import { Button } from './Button/Button'
@@ -31,24 +31,26 @@ export function App () {
         setPage(prevState => prevState + 1)
     }
 
-    const getImages = useCallback(() => {
-        setIsLoading(true)
-        getImagesList({ queryString: value, page, per_page: perPage }).then((data) => {
-            setImagesList(prevState => [...prevState, ...data.hits])
-            setShowBtn(page < Math.ceil(data.totalHits / perPage))
-        }).catch((error) => {
-            console.log(error)
-        }).finally(() => {
-            setIsLoading(false)
 
-        })
-    }, [value, page, perPage])
 
     useEffect(() => {
-        if (value) {
-            getImages()
+        if (!value) {
+            return;
         }
-    }, [value, getImages])
+        const getImages = () => {
+            setIsLoading(true)
+            getImagesList({ queryString: value, page, per_page: perPage }).then((data) => {
+                setImagesList(prevState => [...prevState, ...data.hits])
+                setShowBtn(page < Math.ceil(data.totalHits / perPage))
+            }).catch((error) => {
+                console.log(error)
+            }).finally(() => {
+                setIsLoading(false)
+
+            })
+        }
+        getImages()
+    }, [value, page, perPage])
 
     return (
         <div

@@ -4,11 +4,7 @@ import { useEffect } from 'react'
 
 export function Modal ({ onToggle, description, largeImage }) {
 
-    const handlePressEscape = (event) => {
-        if (event.key === 'Escape') {
-            onToggle()
-        }
-    }
+
 
     const handlePressBackdrop = (event) => {
         if (event.target === event.currentTarget) {
@@ -17,14 +13,18 @@ export function Modal ({ onToggle, description, largeImage }) {
     }
 
     useEffect(() => {
-        console.log('fsdfds')
         document.body.style.overflow = 'hidden'
+        const handlePressEscape = (event) => {
+            if (event.key === 'Escape') {
+                onToggle()
+            }
+        }
         window.addEventListener('keydown', handlePressEscape)
         return () => {
             document.body.style.overflow = 'inherit'
             window.removeEventListener('keydown', handlePressEscape)
         }
-    })
+    }, [onToggle])
 
     return (
         <ModalOverlay onClick={ handlePressBackdrop }>
